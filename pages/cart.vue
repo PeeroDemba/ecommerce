@@ -35,6 +35,8 @@ function prompter() {
           <p>${{ product.price }}</p>
           <input
             type="number"
+            placeholder="Enter number of items"
+            aria-label="Enter number of items"
             value="1"
             @input="
               (e) => {
@@ -53,12 +55,16 @@ function prompter() {
           </p>
           <p v-else>Total Value: ${{ product.price }}</p>
           <button
+            type="button"
+            aria-label="Remove from Cart"
             @click="
               () => {
                 const filtered = cart.cart.filter(
                   (e) => e.item !== product.item
                 );
                 cart.cart = filtered;
+                calculated.splice(index, 1);
+                console.log(cart.cart);
               }
             "
             class="text-white bg-purple-700 py-2 px-4 rounded-md text- active:bg-purple-400 hover:bg-purple-400"
@@ -76,7 +82,7 @@ function prompter() {
         CHECKOUT
       </p>
       <div class="overflow-x-scroll">
-        <div class="w-[800px]">
+        <div class="min-w-[800px]">
           <div
             class="flex justify-between items-center border font-bold border-black"
           >
@@ -119,6 +125,7 @@ function prompter() {
       </div>
       <div class="flex justify-center mt-4">
         <button
+          type="button"
           @click="
             () => {
               cart.cart.splice(0, cart.cart.length);

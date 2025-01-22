@@ -26,15 +26,9 @@
           <p>{{ product.category }}</p>
           <p>${{ product.price + product.price * (2.2 / 100) }}</p>
           <button
+            aria-label="Add to Cart"
             @click="
-              () => {
-                cart.inserter(
-                  product.title,
-                  product.price + product.price * (2.2 / 100),
-                  product.image,
-                  cartItems
-                );
-              }
+              inserter(cart.cart, product.title, product.price, product.image)
             "
             class="text-white bg-purple-700 py-2 px-4 rounded-md text- active:bg-purple-400 hover:bg-purple-400"
           >
@@ -51,7 +45,36 @@ import axios from "axios";
 import { useCartStore } from "~/store/cart";
 
 const cart = useCartStore();
-const { cart: cartItems } = storeToRefs(cart);
+
+function inserter(
+  cartItems: { item: string; price: number; image: string }[],
+  title: string,
+  price: number,
+  image: string
+) {
+  console.log(cartItems);
+  if (cartItems !== undefined && cartItems.length >= 1) {
+    let exist = cartItems.some((e) => e.item === title);
+    if (!exist) {
+      cartItems.push({
+        item: title,
+        price: price,
+        image: image,
+      });
+      alert("Product added to cart");
+    }
+    if (exist) {
+      alert("Product already exists inside the cart");
+    }
+  } else {
+    cartItems.push({
+      item: title,
+      price: price,
+      image: image,
+    });
+    alert("Product added to cart");
+  }
+}
 
 const loading = useState("loading", () => false);
 const products = useState<
