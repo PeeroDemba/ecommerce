@@ -16,7 +16,7 @@ function prompter() {
 </script>
 
 <template>
-  <main class="pb-6 dark:text-white">
+  <main class="pb-6 dark:text-white h-max">
     <div class="grid grid-cols-1 gap-8">
       <div
         v-if="cart.cart.length > 0"
@@ -67,52 +67,54 @@ function prompter() {
           </button>
         </form>
       </div>
-      <div v-else class="text-center w-screen h-[calc(100vh-60px)]">
+      <div v-else class="text-center h-[calc(100vh-60px)]">
         No items in cart
       </div>
     </div>
-    <div v-if="cart.cart.length > 0" class="mt-8">
+    <div v-if="cart.cart.length > 0" class="mt-20">
       <p class="text-red-500 text-[3rem] sm:text-[5rem] text-center">
         CHECKOUT
       </p>
-      <div class="w-[600px] overflow-x-scroll">
-        <div
-          class="flex justify-between items-center border font-bold border-black"
-        >
-          <p class="w-1/3 p-2">Item name</p>
-          <p class="w-1/3 p-2 border-l border-r border-black">
-            Number of Items
-          </p>
-          <p class="w-1/3 p-2">Total Value</p>
-          <p></p>
-        </div>
-        <div
-          v-for="(items, index) of calculated"
-          :key="index"
-          class="flex justify-between items-center border border-black"
-        >
-          <p class="w-1/3 p-2">{{ items.item }}</p>
-          <p class="w-1/3 p-2 border-l border-r border-black">
-            {{ items.count }}
-          </p>
-          <p class="w-1/3 p-2">{{ items.total }}</p>
-          <p></p>
-        </div>
-        <div
-          class="flex justify-between items-center border font-bold border-black"
-        >
-          <p class="w-1/3 p-2"></p>
-          <p class="w-1/3 p-2 border-l border-r border-black">
-            Total Price for all purchased items:
-          </p>
-          <p class="w-1/3 p-2">
-            {{
-              calculated.reduce((p, n) => {
-                return p + n.total;
-              }, 0)
-            }}
-          </p>
-          <p></p>
+      <div class="overflow-x-scroll">
+        <div class="w-[800px]">
+          <div
+            class="flex justify-between items-center border font-bold border-black"
+          >
+            <p class="w-1/3 p-2">Item name</p>
+            <p class="w-1/3 p-2 border-l border-r border-black">
+              Number of Items
+            </p>
+            <p class="w-1/3 p-2">Total Value</p>
+            <p></p>
+          </div>
+          <div
+            v-for="(items, index) of calculated"
+            :key="index"
+            class="flex justify-between items-center border border-black"
+          >
+            <p class="w-1/3 p-2">{{ items.item }}</p>
+            <p class="w-1/3 p-2 border-l border-r border-black">
+              {{ items.count }}
+            </p>
+            <p class="w-1/3 p-2">{{ items.total }}</p>
+            <p></p>
+          </div>
+          <div
+            class="flex justify-between items-center border font-bold border-black"
+          >
+            <p class="w-1/3 p-2"></p>
+            <p class="w-1/3 p-2 border-l border-r border-black">
+              Total Price for all purchased items:
+            </p>
+            <p class="w-1/3 p-2">
+              {{
+                calculated.reduce((p, n) => {
+                  return p + n.total;
+                }, 0)
+              }}
+            </p>
+            <p></p>
+          </div>
         </div>
       </div>
       <div class="flex justify-center mt-4">
