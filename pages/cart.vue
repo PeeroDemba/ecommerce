@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useCartStore } from "~/store/cart";
 
+const itemCount = ref(1);
+
 const cart = useCartStore();
 let calculated: { total: number; count: number; item: string }[] = reactive(
   Array.from({ length: cart.cart.length })
@@ -16,7 +18,7 @@ function prompter() {
 </script>
 
 <template>
-  <main class="pb-6 dark:text-white h-max">
+  <main class="pb-6 dark:text-white h-max min-h-screen">
     <div class="grid grid-cols-1 gap-8">
       <div
         v-if="cart.cart.length > 0"
@@ -37,7 +39,7 @@ function prompter() {
             type="number"
             placeholder="Enter number of items"
             aria-label="Enter number of items"
-            value="1"
+            :value="itemCount"
             @input="
               (e) => {
                 if (e.target !== null) {
@@ -54,23 +56,74 @@ function prompter() {
             Total Value: ${{ calculated[index].total }}
           </p>
           <p v-else>Total Value: ${{ product.price }}</p>
-          <button
-            type="button"
-            aria-label="Remove from Cart"
-            @click="
-              () => {
-                const filtered = cart.cart.filter(
-                  (e) => e.item !== product.item
-                );
-                cart.cart = filtered;
-                calculated.splice(index, 1);
-                console.log(cart.cart);
-              }
-            "
-            class="text-white bg-purple-700 py-2 px-4 rounded-md text- active:bg-purple-400 hover:bg-purple-400"
-          >
-            Remove from Cart
-          </button>
+          <div className="flex items-center gap-4 justify-center">
+            <button
+              type="button"
+              aria-label="Increase Cart"
+              @click="
+                () => {
+                  itemCount++;
+                  calculated[index].total = itemCount * product.price;
+                  calculated[index].count = itemCount;
+                  calculated[index].item = product.item;
+                }
+              "
+              class="text-white bg-purple-700 py-2 px-4 rounded-md text- active:bg-purple-400 hover:bg-purple-400"
+            >
+              Add
+            </button>
+            <button
+              type="button"
+              aria-label="Decrease Cart"
+              @click="
+                () => {
+                  if (itemCount > 0) {
+                    itemCount--;
+                    calculated[index].total = itemCount * product.price;
+                    calculated[index].count = itemCount;
+                    calculated[index].item = product.item;
+                  } else {
+                    itemCount = 0;
+                  }
+                }
+              "
+              class="text-white bg-purple-700 py-2 px-4 rounded-md text- active:bg-purple-400 hover:bg-purple-400"
+            >
+              Remove
+            </button>
+            <button
+              type="button"
+              aria-label="Reset Cart"
+              @click="
+                () => {
+                  itemCount = 0;
+                  calculated[index].total = itemCount * product.price;
+                  calculated[index].count = itemCount;
+                  calculated[index].item = product.item;
+                }
+              "
+              class="text-white bg-purple-700 py-2 px-4 rounded-md text- active:bg-purple-400 hover:bg-purple-400"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              aria-label="Remove from Cart"
+              @click="
+                () => {
+                  const filtered = cart.cart.filter(
+                    (e) => e.item !== product.item
+                  );
+                  cart.cart = filtered;
+                  calculated.splice(index, 1);
+                  console.log(cart.cart);
+                }
+              "
+              class="text-white bg-purple-700 py-2 px-4 rounded-md text- active:bg-purple-400 hover:bg-purple-400"
+            >
+              Remove from cart
+            </button>
+          </div>
         </form>
       </div>
       <div v-else class="text-center h-[calc(100vh-60px)]">

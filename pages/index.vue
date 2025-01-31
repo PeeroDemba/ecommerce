@@ -1,5 +1,5 @@
 <template>
-  <main class="pb-6">
+  <main class="pb-6 min-h-screen">
     <div
       v-if="loading"
       class="flex justify-center items-center h-[calc(100vh-56px)] dark:text-white"
@@ -52,7 +52,6 @@ function inserter(
   price: number,
   image: string
 ) {
-  console.log(cartItems);
   if (cartItems !== undefined && cartItems.length >= 1) {
     let exist = cartItems.some((e) => e.item === title);
     if (!exist) {
